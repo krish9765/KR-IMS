@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Notes & Guide — KR IMS HUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c10; --surface:#0e1318; --surface2:#131a22; --border:#1a2330;
+  --accent:#00ffc8; --accent2:#ff6b35; --accent3:#7c6fff; --accent4:#ffd166; --accent5:#06d6a0;
+  --text:#e8f0f7; --muted:#4a5568; --danger:#ff4d4d;
+  --mono:'Space Mono',monospace; --display:'Syne',sans-serif; --radius:14px; --t:.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--display);overflow-x:hidden}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,200,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,200,.03) 1px,transparent 1px);background-size:48px 48px;animation:gridPan 40s linear infinite}
+@keyframes gridPan{to{background-position:48px 48px}}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.12;z-index:0;animation:orbFloat 12s ease-in-out infinite}
+.orb-1{width:500px;height:500px;background:var(--accent3);top:-100px;left:-100px}
+.orb-2{width:420px;height:420px;background:var(--accent);right:-90px;bottom:-90px;animation-delay:-4s}
+.orb-3{width:300px;height:300px;background:var(--accent2);top:45%;left:55%;animation-delay:-8s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-18px) scale(1.04)}}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:44px 32px 72px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(8,12,16,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand-mini,.label{font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.brand-mini strong,.accent{color:var(--accent)}
+.spacer{flex:1}
+.btn,.icon-btn{border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);border-radius:10px;padding:9px 13px;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.5px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all var(--t)}
+.btn:hover,.icon-btn:hover{border-color:var(--btn-color,var(--accent));color:var(--btn-color,var(--accent));box-shadow:0 0 20px color-mix(in srgb,var(--btn-color,var(--accent)) 16%,transparent);transform:translateY(-1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.btn.warn{--btn-color:var(--accent4)} .btn.orange{--btn-color:var(--accent2)} .btn.purple{--btn-color:var(--accent3)} .btn.green{--btn-color:var(--accent5)}
+.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin:18px 0 38px}
+.kicker{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(2rem,5vw,3.8rem);font-weight:800;line-height:.95;letter-spacing:-2px}
+.sub{font-family:var(--mono);font-size:.72rem;color:var(--muted);line-height:1.8;margin-top:12px;max-width:680px}
+.status{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-align:right;line-height:2}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);margin-right:7px}
+.section-title{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:14px;margin:26px 0 16px}
+.section-title:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--border),transparent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card,.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.card{position:relative;text-decoration:none;color:var(--text);padding:24px;display:flex;flex-direction:column;gap:14px;min-height:210px;transition:all var(--t)}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--card-color,var(--accent));opacity:.75}
+.card:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-color,var(--accent)),transparent 70%);opacity:0;transition:opacity var(--t);pointer-events:none}
+.card:hover{border-color:var(--card-color,var(--accent));transform:translateY(-4px);box-shadow:0 18px 50px rgba(0,0,0,.42)}
+.card:hover:after{opacity:.055}
+.card-icon{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);display:grid;place-items:center;font-size:21px}
+.card-title{font-size:1.02rem;font-weight:800;line-height:1.2}
+.card-desc{font-family:var(--mono);font-size:.68rem;line-height:1.7;color:var(--muted);flex:1}
+.card-footer{border-top:1px solid var(--border);padding-top:13px;display:flex;align-items:center;justify-content:space-between}
+.tag{font-family:var(--mono);font-size:.56rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;border:1px solid var(--border);border-radius:999px;color:var(--muted);padding:3px 8px;background:rgba(255,255,255,.04)}
+.card:hover .tag{border-color:var(--card-color,var(--accent));color:var(--card-color,var(--accent))}
+.wip{opacity:.55;cursor:not-allowed}.wip:hover{transform:none}.wip-badge{position:absolute;top:12px;right:12px}
+.panel-head{background:var(--surface2);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-body{padding:16px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--mono);font-size:.76rem;padding:10px 12px;outline:none;transition:all var(--t)}
+textarea{min-height:170px;resize:vertical;line-height:1.65}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,255,200,.1)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.68rem}
+.table th,.table td{border-bottom:1px solid var(--border);padding:10px;text-align:left;vertical-align:top}
+.table th{color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-size:.58rem;background:var(--surface2)}
+.notice{border:1px solid rgba(255,209,102,.24);background:rgba(255,209,102,.06);border-radius:12px;padding:12px 14px;color:var(--accent4);font-family:var(--mono);font-size:.68rem;line-height:1.7;margin:14px 0}
+.hide{display:none!important}
+.toast{position:fixed;right:22px;bottom:22px;z-index:99;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-family:var(--mono);font-size:.7rem;color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);pointer-events:none;transition:all var(--t)}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:720px){.wrap,.topbar-inner{padding-left:18px;padding-right:18px}.hero{flex-direction:column}.status{text-align:left}.form-grid{grid-template-columns:1fr}}
+
+.tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab.active{border-color:var(--tab-color,var(--accent));color:var(--tab-color,var(--accent));box-shadow:0 0 18px color-mix(in srgb,var(--tab-color,var(--accent)) 14%,transparent)}
+.note-area{min-height:520px;white-space:pre-wrap}
+.copy-area{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;white-space:pre-wrap;font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--accent);overflow:auto;max-height:360px}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="btn" href="index.html">← Hub</a>
+    <div class="brand-mini">Notes &amp; <strong>Guide</strong></div>
+    <div class="spacer"></div>
+    <button class="btn primary" onclick="saveCurrent()">💾 Save</button>
+    <button class="btn purple" onclick="openTabForm()">＋ Add Tab</button>
+    <button class="btn warn" onclick="exportNotes()">⬇ Export Notes</button>
+    <button class="btn green" onclick="document.getElementById('importNotesFile').click()">⬆ Import Notes</button>
+    <input id="importNotesFile" type="file" accept=".json" class="hide" onchange="importNotes(event)">
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="kicker">▶ Reference Docs</div>
+      <h1>Notes &amp; <span class="accent">Guide</span></h1>
+      <div class="sub">Editable notes with editable tabs. Add new tab, rename, delete, and save notes directly in browser localStorage.</div>
+    </div>
+    <div class="status"><span class="dot"></span><span id="saveStatus">Ready</span></div>
+  </section>
+
+  <div class="panel" id="tabFormPanel" style="display:none;margin-bottom:16px;">
+    <div class="panel-head">
+      <div class="label" id="tabFormTitle">Add New Tab</div>
+      <button class="btn orange" onclick="closeTabForm()">Close</button>
+    </div>
+    <div class="panel-body">
+      <div class="form-grid">
+        <div class="field"><label>Tab Name</label><input id="tabName" type="text" placeholder="Example: Podman Notes"></div>
+        <div class="field"><label>Icon</label><input id="tabIcon" type="text" placeholder="🐳" maxlength="4"></div>
+        <div class="field">
+          <label>Accent Colour</label>
+          <select id="tabColor">
+            <option value="#00ffc8">Teal</option>
+            <option value="#ff6b35">Orange</option>
+            <option value="#7c6fff">Purple</option>
+            <option value="#ffd166">Yellow</option>
+            <option value="#06d6a0">Green</option>
+          </select>
+        </div>
+        <div class="field"><label>Tab ID / Slug</label><input id="tabId" type="text" placeholder="auto-created" disabled></div>
+        <div class="field full"><label>Starting Notes</label><textarea id="tabContent" placeholder="Paste notes here..."></textarea></div>
+      </div>
+      <div class="actions" style="margin-top:12px;">
+        <button class="btn primary" onclick="saveTabForm()" id="tabFormSaveBtn">＋ Add Tab</button>
+        <button class="btn" onclick="closeTabForm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:16px;">
+    <div class="panel-head">
+      <div class="label">Tabs</div>
+      <div class="actions">
+        <button class="btn purple" onclick="openTabForm()">＋ Add New Tab</button>
+        <button class="btn" onclick="renameCurrentTab()">✎ Rename Current</button>
+        <button class="btn orange" onclick="deleteCurrentTab()">🗑 Delete Current</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="tabbar" id="tabbar"></div>
+      <div class="notice">New tabs are saved in browser storage. Use <b>Export Notes</b> or <b>Export All Data</b> from index.html if your browser storage resets.</div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div class="label" id="activeTitle">Notes</div>
+      <div class="actions">
+        <button class="btn purple" onclick="copyCurrent()">Copy</button>
+        <button class="btn orange" onclick="clearCurrent()">Clear</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <textarea id="noteText" class="note-area" spellcheck="false" oninput="markDirty()"></textarea>
+      <div class="notice">Edit here → click <b>Save</b>. For permanent backup, export notes or export all dashboard data.</div>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const NOTE_KEY = 'kr_notes_tabs_v1';
+const DEFAULT_TABS = [
+  {
+    id:'podman', title:'Podman Notes', icon:'🐳', color:'#7c6fff',
+    content:`Podman command
+
+container config
+Easy rule to remember
+one container uses the path → :Z
+many containers use the same path → :z
+
+sudo podman ps
+sudo podman ps -a
+
+# outside container
+sudo podman logs ims2rhbmy-nginx
+
+# timestamp
+sudo podman logs -t ims2rhbmy-nginx
+
+# live tail
+sudo podman logs -f ims2rhbmy-nginx
+sudo podman logs -t --tail 50 ims2rhbmy-nginx
+
+exit
+# or Ctrl + D
+
+sudo podman exec ims2rhbmy-nginx \\
+  nginx -t -c /etc/nginx/ims2rhbmy/nginx.conf
+
+sudo podman restart ims2rhbmy-nginx
+sudo podman stop ims2rhbmy-nginx
+sudo podman start ims2rhbmy-nginx
+sudo podman inspect ims2rhbmy-nginx | grep -A5 Mounts
+
+For Quadlet container = use systemctl
+For manual container = use podman
+
+sudo systemctl restart REVERSEPROXYMY-NGINX.service
+
+/logdrive/IMS2RHBMY/
+  ├── cms/
+  ├── acs/
+  ├── ws/
+
+sudo podman exec -it ims2rhbmy-nginx /bin/sh
+ls -l /logdrive/IMS2RHBMY
+ls -l /etc/nginx/ims2rhbmy
+nginx -v
+
+# if logs stuck
+sudo podman exec -it IMSAUTH-NGINX nginx -s reopen
+
+grep -R 'http://192.168.161.26:2003' /settings/ims2rhbkh/acs/simulator/
+
+# change all line one file
+# ori: /var/log/application/CMS/
+# to : /var/log/application/
+sudo sed -i 's#/var/log/application/CMS/#/var/log/application/#g' /settings/ims2rhbmy/cms/log4j2.xml
+sudo sed -i 's#/var/log/application/CMS/#/var/log/application/#g' /settings/ims2rhbmy/cms/log4j_debug.xml
+`
+  },
+  {id:'linux', title:'Linux Notes', icon:'🐧', color:'#00ffc8', content:`Useful Linux commands
+
+ls -lah
+df -h
+free -h
+ip addr
+hostname -I
+ss -tlnp | grep <port>
+curl -vk https://<domain>/
+tail -f <logfile>
+grep -i "keyword" <filename>
+find / -name "filename" 2>/dev/null
+`},
+  {id:'notes', title:'General Notes', icon:'📋', color:'#ffd166', content:`General Ops Notes
+
+Add your daily notes here.
+Click Save after editing.
+
+Reminder:
+- Export notes when important
+- Export all dashboard data from index.html for full backup
+`}
+];
+let store = loadStore();
+let currentTab = store.activeId || (store.tabs[0] && store.tabs[0].id) || 'podman';
+let editingTabId = null;
+
+function cloneTabs(tabs){ return JSON.parse(JSON.stringify(tabs)); }
+function slugify(text){
+  const slug = String(text || 'tab').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  return slug || 'tab';
+}
+function uniqueId(base){
+  let id = slugify(base), i = 2;
+  const ids = new Set(store.tabs.map(t=>t.id));
+  while(ids.has(id)){ id = slugify(base) + '-' + i++; }
+  return id;
+}
+function migrateOldObject(obj){
+  const titles = {podman:'Podman Notes', linux:'Linux Notes', notes:'General Notes'};
+  const icons = {podman:'🐳', linux:'🐧', notes:'📋'};
+  const colors = {podman:'#7c6fff', linux:'#00ffc8', notes:'#ffd166'};
+  return Object.keys(obj).map(k => ({id:k, title:titles[k] || k, icon:icons[k] || '📝', color:colors[k] || '#00ffc8', content:String(obj[k] || '')}));
+}
+function loadStore(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(NOTE_KEY));
+    if(raw && Array.isArray(raw.tabs)) return {tabs: raw.tabs.length ? raw.tabs : cloneTabs(DEFAULT_TABS), activeId: raw.activeId || 'podman'};
+    if(raw && typeof raw === 'object') return {tabs: migrateOldObject(raw), activeId:'podman'};
+  }catch(e){}
+  return {tabs: cloneTabs(DEFAULT_TABS), activeId:'podman'};
+}
+function saveStore(){
+  localStorage.setItem(NOTE_KEY, JSON.stringify({tabs:store.tabs, activeId:currentTab}));
+}
+function activeTab(){ return store.tabs.find(t=>t.id===currentTab) || store.tabs[0]; }
+function renderTabs(){
+  document.getElementById('tabbar').innerHTML = store.tabs.map(t => `
+    <button class="btn tab ${t.id===currentTab?'active':''}" style="--tab-color:${escapeAttr(t.color || '#00ffc8')}" onclick="switchTab('${escapeAttr(t.id)}')">
+      <span>${escapeHtml(t.icon || '📝')}</span> ${escapeHtml(t.title || t.id)}
+    </button>`).join('');
+}
+function showCurrent(){
+  if(!store.tabs.length){ store.tabs = cloneTabs(DEFAULT_TABS); currentTab = store.tabs[0].id; }
+  const tab = activeTab();
+  currentTab = tab.id;
+  document.getElementById('noteText').value = tab.content || '';
+  document.getElementById('activeTitle').textContent = `${tab.icon || '📝'} ${tab.title}`;
+  renderTabs();
+}
+function switchTab(id){
+  saveCurrent(false);
+  currentTab = id;
+  showCurrent();
+}
+function markDirty(){ document.getElementById('saveStatus').textContent = 'Unsaved changes'; }
+function saveCurrent(show=true){
+  const tab = activeTab();
+  if(!tab) return;
+  tab.content = document.getElementById('noteText').value;
+  saveStore();
+  document.getElementById('saveStatus').textContent = 'Saved: ' + new Date().toLocaleString('en-MY');
+  if(show) toast('Saved');
+}
+function openTabForm(tabId=null){
+  saveCurrent(false);
+  editingTabId = tabId;
+  const tab = tabId ? store.tabs.find(t=>t.id===tabId) : null;
+  document.getElementById('tabFormTitle').textContent = tab ? 'Edit Tab' : 'Add New Tab';
+  document.getElementById('tabFormSaveBtn').textContent = tab ? '✎ Update Tab' : '＋ Add Tab';
+  document.getElementById('tabName').value = tab ? tab.title : '';
+  document.getElementById('tabIcon').value = tab ? tab.icon : '📝';
+  document.getElementById('tabColor').value = tab ? tab.color : '#00ffc8';
+  document.getElementById('tabId').value = tab ? tab.id : '';
+  document.getElementById('tabContent').value = tab ? tab.content : '';
+  document.getElementById('tabFormPanel').style.display = 'block';
+  document.getElementById('tabName').focus();
+}
+function closeTabForm(){
+  editingTabId = null;
+  document.getElementById('tabFormPanel').style.display = 'none';
+}
+function saveTabForm(){
+  const title = document.getElementById('tabName').value.trim();
+  if(!title){ toast('Tab name required'); return; }
+  const icon = document.getElementById('tabIcon').value.trim() || '📝';
+  const color = document.getElementById('tabColor').value;
+  const content = document.getElementById('tabContent').value;
+  if(editingTabId){
+    const tab = store.tabs.find(t=>t.id===editingTabId);
+    if(!tab) return;
+    tab.title = title; tab.icon = icon; tab.color = color; tab.content = content;
+    currentTab = tab.id;
+    toast('Tab updated');
+  } else {
+    const tab = {id:uniqueId(title), title, icon, color, content};
+    store.tabs.push(tab);
+    currentTab = tab.id;
+    toast('Tab added');
+  }
+  saveStore(); closeTabForm(); showCurrent();
+}
+function renameCurrentTab(){
+  const tab = activeTab(); if(!tab) return;
+  openTabForm(tab.id);
+}
+function deleteCurrentTab(){
+  const tab = activeTab(); if(!tab) return;
+  if(store.tabs.length <= 1){ toast('Need at least one tab'); return; }
+  if(!confirm(`Delete tab "${tab.title}"? This removes its notes too.`)) return;
+  const idx = store.tabs.findIndex(t=>t.id===tab.id);
+  store.tabs.splice(idx,1);
+  currentTab = (store.tabs[idx] || store.tabs[idx-1] || store.tabs[0]).id;
+  saveStore(); showCurrent(); toast('Tab deleted');
+}
+function copyCurrent(){
+  navigator.clipboard.writeText(document.getElementById('noteText').value).then(()=>toast('Copied notes'));
+}
+function clearCurrent(){
+  if(!confirm('Clear this tab notes?')) return;
+  document.getElementById('noteText').value='';
+  saveCurrent();
+}
+function exportNotes(){
+  saveCurrent(false);
+  const data = {type:'KR_IMS_NOTES_BACKUP', version:2, exportedAt:new Date().toISOString(), tabs:store.tabs, activeId:currentTab};
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`kr-ims-notes-backup-${new Date().toISOString().slice(0,10)}.json`; a.click();
+  URL.revokeObjectURL(url); toast('Notes exported');
+}
+function importNotes(ev){
+  const file = ev.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(Array.isArray(data.tabs)) store = {tabs:data.tabs, activeId:data.activeId || data.tabs[0]?.id};
+      else if(data.notes && Array.isArray(data.notes.tabs)) store = {tabs:data.notes.tabs, activeId:data.notes.activeId || data.notes.tabs[0]?.id};
+      else if(data.notes && typeof data.notes === 'object') store = {tabs:migrateOldObject(data.notes), activeId:'podman'};
+      else if(typeof data === 'object') store = {tabs:migrateOldObject(data), activeId:'podman'};
+      else throw new Error('Invalid');
+      if(!store.tabs.length) store.tabs = cloneTabs(DEFAULT_TABS);
+      currentTab = store.activeId || store.tabs[0].id;
+      saveStore(); showCurrent(); toast('Notes imported');
+    }catch(err){ toast('Invalid notes backup'); }
+    ev.target.value='';
+  };
+  reader.readAsText(file);
+}
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(window.__toast); window.__toast=setTimeout(()=>t.classList.remove('show'),2500);
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function escapeAttr(s){ return escapeHtml(s).replace(/`/g,'&#96;'); }
+window.addEventListener('beforeunload',()=>saveCurrent(false));
+showCurrent();
+</script>
+</body>
+</html>
