@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KRISH IMS HUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #080c10;
+      --surface:  #0e1318;
+      --border:   #1a2330;
+      --accent:   #00ffc8;
+      --accent2:  #ff6b35;
+      --accent3:  #7c6fff;
+      --accent4:  #ffd166;
+      --accent5:  #06d6a0;
+      --text:     #e8f0f7;
+      --muted:    #4a5568;
+      --mono:     'Space Mono', monospace;
+      --display:  'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--display);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── ANIMATED BACKGROUND ─────────────────────────────── */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,255,200,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,200,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: gridPan 40s linear infinite;
+    }
+    @keyframes gridPan {
+      0%   { background-position: 0 0; }
+      100% { background-position: 48px 48px; }
+    }
+
+    /* Glowing orbs */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); opacity: 0.12; z-index: 0;
+      animation: orbFloat 12s ease-in-out infinite;
+    }
+    .orb-1 { width: 500px; height: 500px; background: var(--accent3); top: -100px; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 400px; height: 400px; background: var(--accent); bottom: -80px; right: -80px; animation-delay: -4s; }
+    .orb-3 { width: 300px; height: 300px; background: var(--accent2); top: 50%; left: 50%; animation-delay: -8s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(30px, -30px) scale(1.05); }
+      66%       { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* ── LAYOUT ──────────────────────────────────────────── */
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: 60px 40px 80px;
+    }
+
+    /* ── HEADER ──────────────────────────────────────────── */
+    .site-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 64px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .brand { display: flex; flex-direction: column; gap: 4px; }
+
+    .brand-name {
+      font-family: var(--mono);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 2px;
+    }
+
+    .brand-title {
+      font-size: 2.8rem; font-weight: 800;
+      line-height: 1; letter-spacing: -2px;
+      color: var(--text);
+    }
+
+    .brand-title .highlight { color: var(--accent); }
+
+    .brand-sub {
+      font-family: var(--mono);
+      font-size: 0.65rem; letter-spacing: 2px;
+      color: var(--muted); text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .header-right {
+      text-align: right;
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 1px;
+      line-height: 2;
+    }
+
+    .status-dot {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+      margin-right: 6px; vertical-align: middle;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── SECTION LABEL ───────────────────────────────────── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ── CARDS GRID ──────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    /* ── CARD ────────────────────────────────────────────── */
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex; flex-direction: column; gap: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* Staggered animation delays */
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.15s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
+    .card:nth-child(4) { animation-delay: 0.25s; }
+    .card:nth-child(5) { animation-delay: 0.3s; }
+    .card:nth-child(6) { animation-delay: 0.35s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Coloured top accent bar */
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--card-color, var(--accent));
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Subtle glow on hover */
+    .card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 0%, var(--card-color, var(--accent)), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--card-color, var(--accent));
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+    .card:hover::before { opacity: 1; }
+    .card:hover::after  { opacity: 0.04; }
+
+    /* CARD — WIP state */
+    .card.wip {
+      opacity: 0.5; cursor: not-allowed; pointer-events: none;
+    }
+    .card.wip:hover { transform: none; }
+
+    /* ── CARD INTERNALS ──────────────────────────────────── */
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .card:hover .card-icon {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--card-color, var(--accent));
+    }
+
+    .card-body { flex: 1; }
+
+    .card-title {
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: -0.3px; line-height: 1.2;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-family: var(--mono);
+      font-size: 0.68rem; line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .card-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-tag {
+      font-family: var(--mono);
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .card:hover .card-tag {
+      color: var(--card-color, var(--accent));
+      border-color: var(--card-color, var(--accent));
+      background: rgba(0,0,0,0.3);
+    }
+
+    .card-arrow {
+      font-size: 1rem; color: var(--muted);
+      transition: transform 0.25s, color 0.25s;
+    }
+    .card:hover .card-arrow {
+      transform: translate(3px, -3px);
+      color: var(--card-color, var(--accent));
+    }
+
+    /* WIP badge */
+    .wip-badge {
+      position: absolute; top: 14px; right: 14px;
+      font-family: var(--mono); font-size: 0.55rem;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── HOW TO ADD MORE — GUIDE BOX ─────────────────────── */
+    .guide-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-top: 8px;
+      animation: fadeUp 0.5s 0.4s ease both;
+    }
+
+    .guide-box h3 {
+      font-size: 0.9rem; font-weight: 800;
+      letter-spacing: -0.2px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .guide-box h3 .guide-icon {
+      background: rgba(255,209,102,0.1);
+      border: 1px solid rgba(255,209,102,0.25);
+      color: var(--accent4);
+      width: 28px; height: 28px; border-radius: 6px;
+      display: grid; place-items: center; font-size: 13px;
+    }
+
+    .guide-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .guide-step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+      color: var(--accent4); background: rgba(255,209,102,0.08);
+      border: 1px solid rgba(255,209,102,0.2);
+      border-radius: 5px; padding: 2px 7px;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    .step-text {
+      font-family: var(--mono); font-size: 0.7rem;
+      color: var(--muted); line-height: 1.7;
+    }
+
+    .step-text code {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px;
+      color: var(--accent); font-size: 0.68rem;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .site-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 0.6rem;
+      color: var(--muted); letter-spacing: 1px;
+      animation: fadeUp 0.5s 0.5s ease both;
+    }
+
+    /* ── CLOCK ───────────────────────────────────────────── */
+    #clock { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .wrapper { padding: 32px 20px 60px; }
+      .brand-title { font-size: 2rem; }
+      .site-header { flex-direction: column; gap: 16px; }
+      .header-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="brand">
+      <div class="brand-name">● Internal Tools</div>
+      <div class="brand-title">KR IMS SUPPORT <span class="highlight">HUB</span></div>
+      <div class="brand-sub">IMS &amp; Operations</div>
+    </div>
+    <div class="header-right">
+      <div><span class="status-dot"></span>ALL SYSTEMS OPERATIONAL</div>
+      <div id="clock"></div>
+      <div style="margin-top:4px;">krish9765.github.io</div>
+    </div>
+  </header>
+
+  <!-- ── TOOLS SECTION ───────────────────────────── -->
+  <div class="section-label">Tools</div>
+  <div class="cards-grid">
+
+    <!--
+    ═══════════════════════════════════════════════
+    HOW TO ADD A NEW CARD:
+    Copy one <a class="card"> block below,
+    paste it here, and change:
+      href        → the page/file to open
+      --card-color → the highlight colour
+      card-icon   → an emoji
+      card-title  → name of the tool
+      card-desc   → short description
+      card-tag    → category label
+    ═══════════════════════════════════════════════
+    -->
+
+    <!-- CARD 1: CMS & ACS Launcher -->
+    <a class="card" href="uat_launcher.html" style="--card-color: #00ffc8;">
+      <div class="card-icon">🚀</div>
+      <div class="card-body">
+        <div class="card-title">CMS &amp; ACS Launcher</div>
+        <div class="card-desc">Quick-launch CMS and ACS URLs for all UAT issuer environments. Add, edit, search and open links in one click.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">UAT</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </a>
+
+    <!-- CARD 2: Notes / Guide -->
+    <a class="card" href="notes.html" style="--card-color: #ffd166;">
+      <div class="card-icon">📋</div>
+      <div class="card-body">
+        <div class="card-title">Notes &amp; Guide</div>
+        <div class="card-desc">Team notes, testing procedures, common issues and quick-reference guides for daily ops.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Reference</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </a>
+
+    <!-- CARD 3: PowerShell Tool (placeholder — mark WIP until ready) -->
+    <a class="card wip" href="#" style="--card-color: #ff6b35;">
+      <span class="wip-badge">Coming Soon</span>
+      <div class="card-icon">⚙️</div>
+      <div class="card-body">
+        <div class="card-title">PowerShell Tool</div>
+        <div class="card-desc">Your existing PowerShell automation tool — web version coming soon.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Automation</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </a>
+
+    <!--
+    ── TEMPLATE: Copy this block to add a new tool ──
+
+    <a class="card" href="YOUR-PAGE.html" style="- -card-color: #7c6fff;">
+      <div class="card-icon">🔧</div>
+      <div class="card-body">
+        <div class="card-title">Tool Name</div>
+        <div class="card-desc">Short description of what this tool does.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Category</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </a>
+
+    ─────────────────────────────────────────────── -->
+
+  </div>
+
+  <!-- ── HOW TO ADD MORE ─────────────────────────── -->
+  <div class="section-label">How to add a new tool card</div>
+  <div class="guide-box">
+    <h3>
+      <span class="guide-icon">📖</span>
+      Adding a new card — 3 easy steps
+    </h3>
+
+    <div class="guide-step">
+      <span class="step-num">01</span>
+      <span class="step-text">
+        Open <code>home.html</code> in any text editor (Notepad, VS Code, etc.).<br/>
+        Find the comment that says <code>TEMPLATE: Copy this block to add a new tool</code>
+      </span>
+    </div>
+
+    <div class="guide-step">
+      <span class="step-num">02</span>
+      <span class="step-text">
+        Copy the template <code>&lt;a class="card"&gt;</code> block.<br/>
+        Paste it above the template comment. Change the <code>href</code> to your new page filename,
+        update the emoji, title, description, tag, and pick a colour for <code>--card-color</code>.<br/>
+        Colour ideas: <code>#00ffc8</code> teal &nbsp;·&nbsp; <code>#ff6b35</code> orange &nbsp;·&nbsp;
+        <code>#7c6fff</code> purple &nbsp;·&nbsp; <code>#ffd166</code> yellow &nbsp;·&nbsp; <code>#06d6a0</code> green
+      </span>
+    </div>
+
+    <div class="guide-step">
+      <span class="step-num">03</span>
+      <span class="step-text">
+        Save the file and upload it to your GitHub repo (<code>krish9765.github.io/KR-IMS/</code>).<br/>
+        GitHub Pages updates automatically within ~1 minute. Done! ✅
+      </span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span>KR HUB · Internal Use Only</span>
+    <span>krish9765.github.io/KR-IMS</span>
+  </footer>
+
+</div>
+
+<script>
+  // Live clock
+  function updateClock() {
+    const now = new Date();
+    const d = now.toLocaleDateString('en-MY', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+    const t = now.toLocaleTimeString('en-MY', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    document.getElementById('clock').textContent = `${d} · ${t}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
