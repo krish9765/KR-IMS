@@ -160,7 +160,6 @@ const CARD_KEY = 'kr_hub_cards_v1';
 const DEFAULT_CARDS = [
   {id:'launcher', icon:'🚀', title:'CMS & ACS Launcher', desc:'Quick-launch CMS and ACS URLs for all UAT issuer environments. Add, edit, search and open links in one click.', href:'uat_launcher.html', tag:'UAT', color:'#00ffc8', wip:false},
   {id:'notes', icon:'📋', title:'Notes & Guide', desc:'Team notes, testing procedures, common issues and quick-reference guides for daily ops.', href:'notes.html', tag:'Reference', color:'#ffd166', wip:false},
-  {id:'certchecker', icon:'🔐', title:'Certificate Checker', desc:'Manage CMS, ACS, Visa, Mastercard and MyDebit certificate targets and expiry status.', href:'cert_checker.html', tag:'TLS', color:'#06d6a0', wip:false},
   {id:'powershell', icon:'⚙️', title:'PowerShell Tool', desc:'Your existing PowerShell automation tool — web version coming soon.', href:'#', tag:'Automation', color:'#ff6b35', wip:true}
 ];
 let editingCardId = null;
@@ -258,7 +257,7 @@ function resetCards(){
 }
 
 function exportAllData(){
-  const keys = ['kr_hub_cards_v1','cms_acs_servers_v2','kr_notes_tabs_v1','kr_notes_v1','kr_notes_simple_v1','kr_ims_cert_checker_v1'];
+  const keys = ['kr_hub_cards_v1','cms_acs_servers_v2','kr_notes_tabs_v1','kr_notes_v1','kr_notes_simple_v1'];
   const data = {type:'KR_IMS_FULL_BACKUP', version:1, exportedAt:new Date().toISOString(), localStorage:{}};
   keys.forEach(k=>{ const v = localStorage.getItem(k); if(v !== null) data.localStorage[k]=v; });
   const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
