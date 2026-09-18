@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Holder — KR IMS HUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --bg:#080c10; --surface:#0e1318; --surface2:#131a22; --border:#1a2330;
+  --accent:#00ffc8; --accent2:#ff6b35; --accent3:#7c6fff; --accent4:#ffd166; --accent5:#06d6a0;
+  --text:#e8f0f7; --muted:#4a5568; --danger:#ff4d4d;
+  --mono:'Space Mono',monospace; --display:'Syne',sans-serif; --radius:14px; --t:.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--display);overflow-x:hidden}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,200,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,200,.03) 1px,transparent 1px);background-size:48px 48px;animation:gridPan 40s linear infinite}
+@keyframes gridPan{to{background-position:48px 48px}}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.10;z-index:0;animation:orbFloat 12s ease-in-out infinite}
+.orb-1{width:500px;height:500px;background:var(--accent3);top:-120px;left:-120px}
+.orb-2{width:420px;height:420px;background:var(--accent);right:-90px;bottom:-90px;animation-delay:-4s}
+.orb-3{width:300px;height:300px;background:var(--accent2);top:45%;left:55%;animation-delay:-8s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-18px) scale(1.04)}}
+.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:28px 32px 72px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(8,12,16,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.topbar-inner{max-width:1280px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand-mini,.label{font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.brand-mini strong,.accent{color:var(--accent)}
+.spacer{flex:1}
+.btn,.icon-btn{border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);border-radius:10px;padding:9px 13px;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.5px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all var(--t);white-space:nowrap}
+.btn:hover,.icon-btn:hover{border-color:var(--btn-color,var(--accent));color:var(--btn-color,var(--accent));box-shadow:0 0 20px color-mix(in srgb,var(--btn-color,var(--accent)) 16%,transparent);transform:translateY(-1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.btn.warn{--btn-color:var(--accent4)} .btn.orange{--btn-color:var(--accent2)} .btn.purple{--btn-color:var(--accent3)} .btn.green{--btn-color:var(--accent5)}
+.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin:18px 0 24px}
+.kicker{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--accent3);margin-bottom:8px}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:.95;letter-spacing:-2px}
+.sub{font-family:var(--mono);font-size:.72rem;color:var(--muted);line-height:1.8;margin-top:12px;max-width:760px}
+.section-title{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:14px;margin:20px 0 12px}
+.section-title:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--border),transparent)}
+.app-grid{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.panel-head{background:var(--surface2);border-bottom:1px solid var(--border);padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.panel-body{padding:14px}
+.notice{border:1px solid rgba(255,209,102,.24);background:rgba(255,209,102,.06);border-radius:12px;padding:12px 14px;color:var(--accent4);font-family:var(--mono);font-size:.68rem;line-height:1.7;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+label{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--mono);font-size:.76rem;padding:10px 12px;outline:none;transition:all var(--t)}
+textarea{min-height:78px;resize:vertical;line-height:1.6}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,255,200,.1)}
+.quick-add{display:grid;grid-template-columns:1fr 190px auto;gap:10px;align-items:end}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.group-list{display:flex;flex-direction:column;gap:8px;max-height:520px;overflow:auto;padding-right:3px}
+.group-item{border:1px solid var(--border);background:rgba(255,255,255,.025);border-radius:12px;padding:10px 12px;font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all var(--t)}
+.group-item:hover,.group-item.active{border-color:var(--accent3);color:var(--accent3);background:rgba(124,111,255,.08)}
+.group-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.count{font-size:.58rem;border:1px solid var(--border);border-radius:999px;padding:2px 7px;color:var(--muted)}
+.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:12px}.toolbar input{height:40px}
+.url-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.url-card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;transition:all var(--t);overflow:hidden}
+.url-card:before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-color,var(--accent));opacity:.75}
+.url-card:hover{border-color:var(--card-color,var(--accent));box-shadow:0 14px 38px rgba(0,0,0,.38);transform:translateY(-2px)}
+.url-head{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;margin-bottom:10px}.url-title{font-size:.92rem;font-weight:800;line-height:1.25}.url-sub{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-top:4px;word-break:break-all}.url-summary{font-family:var(--mono);font-size:.68rem;color:var(--muted);line-height:1.65;margin:10px 0;min-height:44px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}.tag{font-family:var(--mono);font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;border:1px solid var(--border);border-radius:999px;color:var(--muted);padding:3px 7px;background:rgba(255,255,255,.04)}.url-card:hover .tag{border-color:var(--card-color,var(--accent));color:var(--card-color,var(--accent))}.star{border:none;background:transparent;color:var(--accent4);font-size:18px;cursor:pointer}.small-btn{border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);border-radius:8px;padding:6px 9px;font-family:var(--mono);font-size:.6rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px}.small-btn:hover{border-color:var(--accent);color:var(--accent)}
+.url-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:10px}.empty{padding:55px 20px;text-align:center;color:var(--muted);font-family:var(--mono);font-size:.7rem;line-height:1.8}.hide{display:none!important}.toast{position:fixed;right:22px;bottom:22px;z-index:99;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-family:var(--mono);font-size:.7rem;color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);pointer-events:none;transition:all var(--t)}.toast.show{opacity:1;transform:translateY(0)}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+@media(max-width:900px){.app-grid{grid-template-columns:1fr}.quick-add{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.wrap,.topbar-inner{padding-left:18px;padding-right:18px}.hero{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="btn" href="index.html">← Hub</a>
+    <div class="brand-mini"><strong>KR</strong> URL HOLDER</div>
+    <div class="spacer"></div>
+    <button class="btn warn" onclick="exportData()">⬇ Export</button>
+    <button class="btn green" onclick="document.getElementById('importFile').click()">⬆ Import</button>
+    <input id="importFile" type="file" accept=".json" class="hide" onchange="importData(event)">
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="kicker">🔗 Ops Link Manager</div>
+      <h1>URL <span class="accent">HOLDER</span></h1>
+      <div class="sub">Paste a URL only. The page auto-detects Jira, Confluence, AWS, GitHub, CMS, ACS and common ops links, then creates a clean searchable card. No need to keep many Edge tabs open.</div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-bottom:18px">
+    <div class="panel-head">
+      <div class="label">Quick Add URL</div>
+      <div class="actions">
+        <button class="btn purple" onclick="toggleAdvanced()">⚙ Advanced</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="quick-add">
+        <div class="field" style="margin:0">
+          <label>Paste URL</label>
+          <input id="quickUrl" placeholder="https://infinitium.atlassian.net/browse/ICSD-64872" onkeydown="if(event.key==='Enter') addUrl()">
+        </div>
+        <div class="field" style="margin:0">
+          <label>Group</label>
+          <select id="quickGroup"></select>
+        </div>
+        <button class="btn primary" onclick="addUrl()">＋ Add</button>
+      </div>
+
+      <div id="advancedBox" class="hide" style="margin-top:12px">
+        <div class="notice">Optional. Leave blank to auto-generate title, type, tags and summary.</div>
+        <div class="quick-add" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="field"><label>Custom Title</label><input id="customTitle" placeholder="Optional title"></div>
+          <div class="field"><label>Custom Tags</label><input id="customTags" placeholder="mbbsg, prod, incident"></div>
+          <div class="field"><label>Custom Summary</label><input id="customSummary" placeholder="Optional short note"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-grid">
+    <aside class="panel">
+      <div class="panel-head">
+        <div class="label">Groups</div>
+      </div>
+      <div class="panel-body">
+        <div class="field">
+          <label>Add Group</label>
+          <div class="actions">
+            <input id="newGroup" placeholder="MBBSG" style="flex:1" onkeydown="if(event.key==='Enter') addGroup()">
+            <button class="btn purple" onclick="addGroup()">＋</button>
+          </div>
+        </div>
+        <div class="group-list" id="groupList"></div>
+      </div>
+    </aside>
+
+    <section>
+      <div class="toolbar">
+        <input id="searchInput" placeholder="Search title, URL, group, tag..." oninput="renderUrls()">
+        <div class="actions">
+          <button class="btn" onclick="setActiveGroup('All')">All</button>
+          <button class="btn warn" onclick="setActiveGroup('Favourites')">⭐ Favourites</button>
+        </div>
+      </div>
+      <div class="section-title" id="currentTitle">All URLs</div>
+      <div class="url-grid" id="urlGrid"></div>
+      <div class="empty hide" id="emptyState">No URLs found.<br>Paste a URL above and click Add.</div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const URL_KEY = 'kr_ims_url_holder_v1';
+const GROUP_KEY = 'kr_ims_url_groups_v1';
+let activeGroup = 'All';
+let editingId = null;
+const DEFAULT_GROUPS = ['All','Favourites','MBBSG','UAT','Production','Jira','Confluence','AWS','Cert Renewal','Personal','Work'];
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function getUrls(){try{return JSON.parse(localStorage.getItem(URL_KEY))||[]}catch{return[]}}
+function setUrls(v){localStorage.setItem(URL_KEY,JSON.stringify(v))}
+function getGroups(){try{const g=JSON.parse(localStorage.getItem(GROUP_KEY)); if(Array.isArray(g)&&g.length)return g}catch{} localStorage.setItem(GROUP_KEY,JSON.stringify(DEFAULT_GROUPS)); return DEFAULT_GROUPS}
+function setGroups(v){localStorage.setItem(GROUP_KEY,JSON.stringify([...new Set(v)]))}
+function cleanUrl(v){return (v||'').trim()}
+function hostOf(url){try{return new URL(url).hostname.replace(/^www\./,'')}catch{return ''}}
+function pathOf(url){try{return new URL(url).pathname}catch{return ''}}
+function typeColor(type){return {Jira:'#2684ff',Confluence:'#ff4bb8',AWS:'#ff9900',GitHub:'#7c6fff',CMS:'#00ffc8',ACS:'#bc8cff','Cert':'#ffd166','Monitoring':'#06d6a0'}[type]||'#00ffc8'}
+
+function analyseUrl(url){
+  const h = hostOf(url).toLowerCase();
+  const p = pathOf(url);
+  let type='URL', group='Work', title=h||url, summary='Saved ops URL for quick access without keeping browser tab open.', tags=[];
+  if(h.includes('atlassian.net') && p.includes('/browse/')){
+    const key = p.split('/browse/')[1]?.split(/[/?#]/)[0] || 'Jira Ticket';
+    type='Jira'; group='Jira'; title=`${key} · Jira Ticket`; summary='Jira issue/ticket page for tracking investigation, task status, comments and updates.'; tags=['jira','ticket',key.split('-')[0].toLowerCase()];
+  } else if(h.includes('atlassian.net') && h.includes('wiki')){
+    type='Confluence'; group='Confluence'; title='Confluence Page'; summary='Confluence documentation or reference page.'; tags=['confluence','wiki','docs'];
+  } else if(h.includes('console.aws.amazon.com') || h.includes('signin.aws.amazon.com')){
+    type='AWS'; group='AWS'; title='AWS Console'; summary='AWS console link for infrastructure, ECS, EC2, Route 53, load balancer or account access.'; tags=['aws','console','infra'];
+  } else if(h.includes('github.com')){
+    type='GitHub'; group='Work'; title='GitHub Repository / File'; summary='GitHub repository, code file, issue or project link.'; tags=['github','code','repo'];
+  } else if(h.includes('dynatrace') || h.includes('grafana') || h.includes('kibana') || h.includes('opensearch')){
+    type='Monitoring'; group='Work'; title='Monitoring Dashboard'; summary='Monitoring or log analysis dashboard.'; tags=['monitoring','logs','dashboard'];
+  } else if(/ims2.*cms/i.test(p) || /cms/i.test(url)){
+    type='CMS'; group='UAT'; const bank=(p.match(/IMS2([^/]+?)CMS/i)||[])[1] || ''; title=bank ? `${bank} CMS` : 'CMS URL'; summary='CMS login/admin URL for issuer testing or operations.'; tags=['cms',bank.toLowerCase()].filter(Boolean);
+  } else if(/ims2.*acs/i.test(p) || /3dsecure/i.test(h) || /simulator/i.test(p)){
+    type='ACS'; group='UAT'; const bank=(p.match(/IMS2([^/]+?)ACS/i)||[])[1] || ''; title=bank ? `${bank} ACS Simulator` : 'ACS / Simulator URL'; summary='ACS or 3DS simulator URL for UAT testing.'; tags=['acs','3ds','simulator',bank.toLowerCase()].filter(Boolean);
+  } else if(h.includes('infinitiumsolutions.com')){
+    type='URL'; group='UAT'; title=h; summary='Infinitium environment URL.'; tags=['infinitium','uat'];
+  }
+  return {type,group,title,summary,tags,color:typeColor(type)};
+}
+
+function renderGroups(){
+  const groups = getGroups(); const urls = getUrls();
+  const select = document.getElementById('quickGroup');
+  select.innerHTML = '<option value="Auto">Auto Detect</option>' + groups.filter(g=>!['All','Favourites'].includes(g)).map(g=>`<option>${esc(g)}</option>`).join('');
+  document.getElementById('groupList').innerHTML = groups.map(g=>{
+    const count = g==='All' ? urls.length : g==='Favourites' ? urls.filter(x=>x.fav).length : urls.filter(x=>x.group===g).length;
+    return `<div class="group-item ${activeGroup===g?'active':''}" onclick="setActiveGroup('${esc(g)}')"><span class="group-name">${g==='Favourites'?'⭐ ':''}${esc(g)}</span><span class="count">${count}</span></div>`;
+  }).join('');
+}
+function setActiveGroup(g){activeGroup=g;renderAll()}
+function addGroup(){
+  const v=document.getElementById('newGroup').value.trim(); if(!v)return toast('Enter group name');
+  const groups=getGroups(); if(!groups.includes(v)) groups.push(v);
+  setGroups(groups); document.getElementById('newGroup').value=''; activeGroup=v; renderAll(); toast('Group added');
+}
+function toggleAdvanced(){document.getElementById('advancedBox').classList.toggle('hide')}
+
+function addUrl(){
+  const url = cleanUrl(document.getElementById('quickUrl').value);
+  if(!url) return toast('Paste URL first');
+  if(!/^https?:\/\//i.test(url)) return toast('URL must start with http:// or https://');
+  const auto = analyseUrl(url);
+  const selectedGroup = document.getElementById('quickGroup').value;
+  const customTitle = document.getElementById('customTitle').value.trim();
+  const customTags = document.getElementById('customTags').value.trim();
+  const customSummary = document.getElementById('customSummary').value.trim();
+  const item = {
+    id: editingId || Date.now().toString(36),
+    url,
+    host: hostOf(url),
+    title: customTitle || auto.title,
+    type: auto.type,
+    group: selectedGroup === 'Auto' ? auto.group : selectedGroup,
+    summary: customSummary || auto.summary,
+    tags: customTags ? customTags.split(',').map(x=>x.trim()).filter(Boolean) : auto.tags,
+    color: auto.color,
+    fav: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  const urls=getUrls();
+  const idx=urls.findIndex(x=>x.id===editingId);
+  if(idx>=0){ item.fav=urls[idx].fav; item.createdAt=urls[idx].createdAt; urls[idx]=item; toast('URL updated'); }
+  else { urls.unshift(item); toast('URL added'); }
+  setUrls(urls);
+  const groups=getGroups(); if(!groups.includes(item.group)) {groups.push(item.group); setGroups(groups)}
+  clearForm(); activeGroup=item.group; renderAll();
+}
+function clearForm(){editingId=null;['quickUrl','customTitle','customTags','customSummary'].forEach(id=>document.getElementById(id).value='');document.getElementById('quickGroup').value='Auto'}
+function editUrl(id){
+  const x=getUrls().find(u=>u.id===id); if(!x)return;
+  editingId=id; document.getElementById('quickUrl').value=x.url; document.getElementById('quickGroup').value=x.group; document.getElementById('customTitle').value=x.title; document.getElementById('customTags').value=(x.tags||[]).join(', '); document.getElementById('customSummary').value=x.summary; document.getElementById('advancedBox').classList.remove('hide'); window.scrollTo({top:0,behavior:'smooth'});
+}
+function deleteUrl(id){const x=getUrls().find(u=>u.id===id); if(!x||!confirm(`Delete ${x.title}?`))return; setUrls(getUrls().filter(u=>u.id!==id)); renderAll(); toast('URL deleted')}
+function toggleFav(id){const urls=getUrls(); const x=urls.find(u=>u.id===id); if(x){x.fav=!x.fav;x.updatedAt=new Date().toISOString();setUrls(urls);renderAll()}}
+function copyUrl(url){navigator.clipboard.writeText(url).then(()=>toast('URL copied'))}
+
+function renderUrls(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  let urls=getUrls();
+  if(activeGroup==='Favourites') urls=urls.filter(x=>x.fav);
+  else if(activeGroup!=='All') urls=urls.filter(x=>x.group===activeGroup);
+  if(q) urls=urls.filter(x=>[x.title,x.url,x.host,x.group,x.type,x.summary,(x.tags||[]).join(' ')].join(' ').toLowerCase().includes(q));
+  document.getElementById('currentTitle').textContent = activeGroup==='All'?'All URLs':activeGroup;
+  document.getElementById('emptyState').classList.toggle('hide', urls.length>0);
+  document.getElementById('urlGrid').innerHTML = urls.map(x=>`<article class="url-card" style="--card-color:${esc(x.color||'#00ffc8')}">
+    <div class="url-head"><div><div class="url-title">${esc(x.title)}</div><div class="url-sub">${esc(x.url)}</div></div><button class="star" onclick="toggleFav('${esc(x.id)}')">${x.fav?'★':'☆'}</button></div>
+    <div class="tags"><span class="tag">${esc(x.type)}</span><span class="tag">${esc(x.group)}</span>${(x.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+    <div class="url-summary">${esc(x.summary)}</div>
+    <div class="url-actions">
+      <a class="small-btn" href="${esc(x.url)}" target="_blank" rel="noopener">↗ Open</a>
+      <button class="small-btn" onclick="copyUrl('${esc(x.url)}')">📋 Copy</button>
+      <button class="small-btn" onclick="editUrl('${esc(x.id)}')">✎ Edit</button>
+      <button class="small-btn" onclick="deleteUrl('${esc(x.id)}')">🗑 Delete</button>
+    </div>
+  </article>`).join('');
+}
+function renderAll(){renderGroups();renderUrls()}
+
+function exportData(){
+  const data={type:'KR_IMS_URL_HOLDER',version:1,exportedAt:new Date().toISOString(),groups:getGroups(),urls:getUrls()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`kr-ims-url-holder-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); toast('URL holder exported');
+}
+function importData(ev){
+  const file=ev.target.files[0]; if(!file)return; const reader=new FileReader();
+  reader.onload=e=>{try{const d=JSON.parse(e.target.result); if(Array.isArray(d.urls)){setUrls(d.urls); if(Array.isArray(d.groups))setGroups(d.groups); renderAll(); toast('URL holder imported')} else throw new Error()}catch{toast('Invalid import file')} ev.target.value=''};
+  reader.readAsText(file);
+}
+function toast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(window.__toast); window.__toast=setTimeout(()=>t.classList.remove('show'),2400)}
+renderAll();
+</script>
+</body>
+</html>
