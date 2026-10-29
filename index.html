@@ -200,12 +200,26 @@ const DEFAULT_CARDS = [
 let editingCardId = null;
 
 function getCards(){
-  try {
-    const saved = JSON.parse(localStorage.getItem(CARD_KEY));
-    if (Array.isArray(saved) && saved.length) return saved;
-  } catch(e) {}
-  localStorage.setItem(CARD_KEY, JSON.stringify(DEFAULT_CARDS));
-  return DEFAULT_CARDS;
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(CARD_KEY)); } catch(e) {}
+  if (!Array.isArray(saved)) {
+    saved = DEFAULT_CARDS;
+    localStorage.setItem(CARD_KEY, JSON.stringify(saved));
+  }
+
+  // One-time, non-destructive migration: add the new URL Holder tool
+  // to existing installations without resetting custom cards or settings.
+  const migrationKey = 'kr_hub_migration_urlholder_v1';
+  if (localStorage.getItem(migrationKey) !== 'done') {
+    const exists = saved.some(c => c.id === 'urlholder' || c.href === 'url_holder.html');
+    if (!exists) {
+      const urlHolder = DEFAULT_CARDS.find(c => c.id === 'urlholder');
+      saved = [...saved, {...urlHolder}];
+      localStorage.setItem(CARD_KEY, JSON.stringify(saved));
+    }
+    localStorage.setItem(migrationKey, 'done');
+  }
+  return saved;
 }
 function setCards(cards){ localStorage.setItem(CARD_KEY, JSON.stringify(cards)); }
 
