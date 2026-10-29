@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>URL Holder — KR IMS HUB</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700" rel="stylesheet">
   <style>
 :root{
   --bg:#080c10; --surface:#0e1318; --surface2:#131a22; --border:#1a2330;
@@ -92,6 +92,26 @@ input:focus,textarea:focus,select:focus{border-color:#008f78;box-shadow:0 0 0 3p
 .kicker{color:#6154d6}
 .url-actions{border-top-color:#e4eaf3}
 .toast{background:#fff;box-shadow:0 12px 40px rgba(32,51,76,.16)}
+
+
+/* Typography refresh — UI readable, technical values monospace */
+:root{--display:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;--ui:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'Space Mono',monospace}
+body{font-family:var(--ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,.url-title{font-family:var(--display);letter-spacing:-.035em}
+h1{line-height:1.1;font-weight:800}
+.url-title{font-size:1rem;font-weight:700;line-height:1.4;letter-spacing:-.015em}
+.sub,.url-summary{font-family:var(--ui);font-size:.86rem;line-height:1.7}
+.url-sub{font-family:var(--mono);font-size:.68rem;line-height:1.65}
+.btn,.icon-btn,.small-btn{font-family:var(--ui);font-size:.79rem;font-weight:650;letter-spacing:0}
+.small-btn{font-size:.75rem}
+.group-item{font-family:var(--ui);font-size:.86rem;font-weight:550}
+input,textarea,select{font-family:var(--ui);font-size:.88rem}
+#quickUrl{font-family:var(--mono);font-size:.78rem}
+.label,label,.brand-mini,.kicker,.section-title,.tag,.count{font-family:var(--mono)}
+.label,label{font-size:.66rem}
+.tag{font-size:.61rem;letter-spacing:.3px}
+.notice,.empty{font-family:var(--ui);font-size:.84rem;line-height:1.7}
+@media(max-width:600px){.url-title{font-size:.98rem}.sub,.url-summary{font-size:.82rem}}
 
 </style>
 </head>
