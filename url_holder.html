@@ -64,6 +64,35 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .url-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:10px}.empty{padding:55px 20px;text-align:center;color:var(--muted);font-family:var(--mono);font-size:.7rem;line-height:1.8}.hide{display:none!important}.toast{position:fixed;right:22px;bottom:22px;z-index:99;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-family:var(--mono);font-size:.7rem;color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);pointer-events:none;transition:all var(--t)}.toast.show{opacity:1;transform:translateY(0)}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 @media(max-width:900px){.app-grid{grid-template-columns:1fr}.quick-add{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.wrap,.topbar-inner{padding-left:18px;padding-right:18px}.hero{flex-direction:column}}
+
+/* KR IMS URL HOLDER — soft light theme, styling only */
+:root{
+  --bg:#f3f6fb;--surface:#ffffff;--surface2:#eef3fa;--border:#dce4ef;
+  --accent:#008f78;--accent2:#d86736;--accent3:#6154d6;--accent4:#a87514;--accent5:#008e68;
+  --text:#172436;--muted:#64748b;--danger:#d64040;
+}
+body{background:#f3f6fb;color:var(--text)}
+.bg-grid{background-image:linear-gradient(rgba(71,105,146,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(71,105,146,.045) 1px,transparent 1px);animation:none}
+.orb{display:none}
+.topbar{background:rgba(255,255,255,.94);box-shadow:0 2px 16px rgba(32,51,76,.055)}
+.panel,.url-card{box-shadow:0 3px 18px rgba(32,51,76,.045)}
+.panel-head{background:#f8faff}
+.btn,.icon-btn,.small-btn{background:#fff;color:#334155}
+.btn:hover,.icon-btn:hover,.small-btn:hover{box-shadow:0 3px 14px rgba(43,69,112,.09)}
+.btn.primary{background:#008f78;border-color:#008f78;color:#fff}
+input,textarea,select{background:#fff;color:#172436;border-color:#ccd7e5}
+input::placeholder,textarea::placeholder{color:#93a1b5}
+input:focus,textarea:focus,select:focus{border-color:#008f78;box-shadow:0 0 0 3px rgba(0,143,120,.11)}
+.group-item{background:#f8faff;color:#475569}
+.group-item:hover,.group-item.active{background:#f0edff;border-color:#a79ceb;color:#5144bf}
+.tag,.count{background:#f1f5fa;color:#526277}
+.notice{background:#fff9eb;border-color:#f0ddb0;color:#93670e}
+.url-card:hover{box-shadow:0 10px 28px rgba(32,51,76,.105)}
+.url-sub,.url-summary,.sub{color:#5b6b80}
+.kicker{color:#6154d6}
+.url-actions{border-top-color:#e4eaf3}
+.toast{background:#fff;box-shadow:0 12px 40px rgba(32,51,76,.16)}
+
 </style>
 </head>
 <body>
